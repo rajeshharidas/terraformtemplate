@@ -3,8 +3,11 @@ apiVersion: v1
 metadata:
     name: lqpdevtest-eks
     annotations:
-      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-name: lqpdevtest-eks-lb
+      service.beta.kubernetes.io/aws-load-balancer-type: external
+      service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-0cf4afb67c4802803,subnet-038ed5f415a1cba46
       service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+      service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
 spec:
     selector:

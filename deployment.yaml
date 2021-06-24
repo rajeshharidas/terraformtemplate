@@ -1,27 +1,13 @@
-apiVersion: v1  
-kind: Service  
-metadata:  
-  name: lqpdevtest-service  
-  labels:  
-    app: lqpdevtest-service  
-spec:  
-  ports:  
-    - name: http  
-      port: 8099 
-      targetPort: 8096
-  selector:  
-    app: lqpdevtest-eks  
----  
-
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: lqpdevtest-svc-deployment
+  namespace: default
 spec:
   selector:
     matchLabels:
       app: lqpdevtest-eks
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -30,17 +16,10 @@ spec:
       containers:
       - name: lqpdevtest
         image: 614191790445.dkr.ecr.us-east-2.amazonaws.com/lqpdevtest:latest
+        env:
+        - name: KAFKA_REST_PROXY_URL
+          value: "http://172.31.37.218:8082"
+        - name: PROXY
+          value: "true"
         ports:
-        - containerPort: 8096
-        livenessProbe:  
-            httpGet:  
-              path: /actuator/health/liveness  
-              port: 8096  
-            initialDelaySeconds: 15  
-            periodSeconds: 5
-        readinessProbe:  
-            httpGet:  
-              path: /actuator/health/readiness  
-              port: 8096  
-            initialDelaySeconds: 5  
-            periodSeconds: 5    
+         - containerPort: 8000

@@ -1,0 +1,5 @@
+kubectl create secret docker-registry regcred \
+  --docker-server=<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  --namespace=health-check
